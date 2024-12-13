@@ -1,3 +1,48 @@
+### **Revisiting Kaggle API Usage**
+Here’s how we typically use the Kaggle API in a Colab notebook:
+
+#### **Typical Kaggle API Steps in Colab**
+1. Upload the **Kaggle API key** (`kaggle.json`) to Colab:
+   ```python
+   from google.colab import files
+   files.upload()  # Upload `kaggle.json` here
+   ```
+
+2. Move the key to the correct directory:
+   ```python
+   import os
+   !mkdir -p ~/.kaggle
+   !mv kaggle.json ~/.kaggle/
+   !chmod 600 ~/.kaggle/kaggle.json  # Set permissions
+   ```
+
+3. Use the Kaggle API to download the dataset:
+   ```python
+   !kaggle datasets download -d msambare/fer2013
+   ```
+
+4. Extract the downloaded dataset:
+   ```python
+   import zipfile
+   with zipfile.ZipFile("fer2013.zip", "r") as zip_ref:
+       zip_ref.extractall("fer2013")
+   ```
+
+---
+
+### **Checklist for Safe Kaggle API Usage**
+- Ensure **`kaggle.json` is not hardcoded** in the notebook.
+- Provide clear instructions for users to upload their own Kaggle API key.
+- Remove any personal API key references in the notebook.
+
+---
+
+### **Updated README.md**
+
+Here’s the updated **README.md** file considering the Kaggle API usage:
+
+---
+
 # Multimodal Human-Emotion Recognition System
 
 This project integrates **vision-based emotion recognition** with **text sentiment analysis** to create a multimodal system for understanding human emotions. It combines predictions from both modalities to enhance the robustness and accuracy of emotion recognition, which is particularly relevant for applications in **human-robot interaction**, **social robotics**, and **mental health assessment**.
@@ -96,14 +141,22 @@ The system combines:
    ```bash
    pip install -r requirements.txt
    ```
-3. Download and prepare the **FER2013** dataset:
-   - [FER2013 on Kaggle](https://www.kaggle.com/msambare/fer2013)
-   - Place the dataset in a folder named `fer2013`.
-4. Run the notebook or script:
-   - Training the Vision Model: `train_vision_model.py`
-   - Sentiment Analysis: Integrated directly in `multimodal_pipeline.py`
-5. Evaluate the Multimodal System:
-   - Run `evaluate_multimodal.py` to visualize combined predictions.
+3. Prepare the **FER2013** dataset:
+   1. Obtain your Kaggle API key:
+      - Go to [Kaggle Account Settings](https://www.kaggle.com/account).
+      - Scroll to the **API** section and click **Create New API Token**.
+      - This will download a `kaggle.json` file.
+   2. Upload the Kaggle API key in the notebook when prompted:
+      ```python
+      from google.colab import files
+      files.upload()  # Upload `kaggle.json`
+      ```
+   3. Download and extract the dataset using the Kaggle API:
+      ```python
+      !kaggle datasets download -d msambare/fer2013
+      !unzip fer2013.zip -d fer2013
+      ```
+4. Open the notebook in Google Colab and run all cells to train and evaluate the multimodal system.
 
 ---
 
@@ -126,4 +179,3 @@ The system combines:
 
 ## License
 This project is open-source and available under the MIT License.
-
